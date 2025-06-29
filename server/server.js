@@ -10,9 +10,16 @@ connectDB();
 //initialize the app
 const app = express();
 
+// Configure CORS
+const corsOptions = {
+  origin: true,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "token", "atoken"],
+};
 // Middlewares
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 
 // Routes
 app.use("/api/auth", userRouter);
