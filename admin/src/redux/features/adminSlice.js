@@ -66,6 +66,9 @@ const adminSlice = createSlice({
     toggleSidebar: (state) => {
       state.sideBarOpen = !state.sideBarOpen;
     },
+    setSidebarOpen: (state, action) => {
+      state.sidebarOpen = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -108,6 +111,6 @@ const adminSlice = createSlice({
   },
 });
 
-export const { logoutAdmin, clearAdminError, toggleSidebar } =
+export const { logoutAdmin, clearAdminError, toggleSidebar, setSidebarOpen } =
   adminSlice.actions;
 export default adminSlice.reducer;

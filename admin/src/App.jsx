@@ -45,7 +45,11 @@ export const App = () => {
           <>
             <AdminSidebar setToken={setToken} />
             <Navbar />
-            <main className="pt-16 lg:pl-64 transition-all duration-300">
+            <main
+              className={`pt-16 transition-all duration-300 ${
+                token ? "lg:pl-64" : ""
+              }`}
+            >
               <div className="p-6">
                 <Routes>
                   <Route

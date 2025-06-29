@@ -44,7 +44,7 @@ const Users = () => {
   return (
     <div className=" p-4 min-h-screen bg-gray-50">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">Users</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-3">Users</h1>
         <p className="text-gray-600">Manage all system users</p>
       </div>
 

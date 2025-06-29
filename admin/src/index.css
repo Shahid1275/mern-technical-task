@@ -1,1 +1,16 @@
+/* index.css or globals.css */
 @import "tailwindcss";
+
+/* Hide scrollbars but still allow scrolling */
+html,
+body {
+  height: 100%;
+  overflow: auto;
+  -ms-overflow-style: none; /* IE & Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}

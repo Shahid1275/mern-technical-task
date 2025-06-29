@@ -44,7 +44,7 @@ const Appointments = () => {
   return (
     <div className=" p-4 pt-5  bg-gray-50">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">Appointments</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-3">Appointments</h1>
         <p className="text-gray-600">Manage all patient appointments</p>
       </div>
 

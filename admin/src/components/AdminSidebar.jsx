@@ -1,3 +1,182 @@
+// import React, { useState, useEffect } from "react";
+// import { NavLink, useNavigate } from "react-router-dom";
+// import {
+//   FaCalendarAlt,
+//   FaUsers,
+//   FaSignOutAlt,
+//   FaUserShield,
+//   FaBars,
+//   FaTimes,
+// } from "react-icons/fa";
+// import { useDispatch, useSelector } from "react-redux";
+// import { logoutAdmin, toggleSidebar } from "../redux/features/adminSlice";
+
+// const AdminSidebar = ({ setToken }) => {
+//   const dispatch = useDispatch();
+//   const navigate = useNavigate();
+//   const { sideBarOpen, isAdmin } = useSelector((state) => state.admin);
+//   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+
+//   const handleLogout = () => {
+//     dispatch(logoutAdmin());
+//     setToken("");
+//     navigate("/");
+//   };
+
+//   const handleToggleSidebar = () => {
+//     dispatch(toggleSidebar());
+//   };
+
+//   useEffect(() => {
+//     const handleResize = () => {
+//       const mobile = window.innerWidth < 1024;
+//       setIsMobile(mobile);
+//       if (!mobile) {
+//         // Always show sidebar on desktop
+//         dispatch(toggleSidebar(true)); // Fixed: directly dispatch the action creator
+//       }
+//     };
+
+//     window.addEventListener("resize", handleResize);
+//     handleResize(); // Initialize on first render
+//     return () => window.removeEventListener("resize", handleResize);
+//   }, [dispatch]);
+
+//   return (
+//     <>
+//       {/* Mobile Toggle Button */}
+//       {isMobile && (
+//         <button
+//           onClick={handleToggleSidebar} // Fixed: using the correct handler
+//           className={`fixed top-4 left-4 z-50 p-2 rounded-md bg-gray-800 text-white transition-all ${
+//             sideBarOpen ? "opacity-0 pointer-events-none" : "opacity-100"
+//           }`}
+//           aria-label="Toggle menu"
+//         >
+//           <FaBars className="w-5 h-5" />
+//         </button>
+//       )}
+
+//       {/* Sidebar */}
+//       <div
+//         className={`bg-gray-800 text-white fixed top-0 z-40 h-screen flex flex-col transition-all duration-300 ease-in-out
+//     ${
+//       isMobile
+//         ? sideBarOpen
+//           ? "left-0 w-full max-w-xs shadow-xl"
+//           : "-left-full w-0"
+//         : "left-0 w-64"
+//     }
+//   `}
+//       >
+//         {/* Close Button (Mobile) */}
+//         {isMobile && sideBarOpen && (
+//           <button
+//             onClick={handleToggleSidebar} // Fixed: using the correct handler
+//             className="absolute top-4 right-4 p-2 text-gray-300 hover:text-white transition-colors"
+//             aria-label="Close menu"
+//           >
+//             <FaTimes className="w-5 h-5" />
+//           </button>
+//         )}
+
+//         {/* Sidebar Content */}
+//         <div className="p-4 border-b border-gray-700 flex items-center">
+//           <FaUserShield className="text-blue-400 w-6 h-6 mr-3" />
+//           <span className="text-xl font-bold text-gray-100 truncate">
+//             {isAdmin ? "Super Admin" : "Admin Panel"}
+//           </span>
+//         </div>
+
+//         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+//           {isAdmin ? (
+//             <>
+//               <NavLink
+//                 to="/admin/appointments"
+//                 className={({ isActive }) =>
+//                   `flex items-center px-4 py-3 rounded-lg transition-colors ${
+//                     isActive
+//                       ? "bg-blue-600 text-white shadow-md"
+//                       : "text-gray-300 hover:bg-gray-700 hover:text-white"
+//                   }`
+//                 }
+//                 onClick={isMobile ? handleToggleSidebar : undefined} // Fixed
+//               >
+//                 <FaCalendarAlt className="w-5 h-5 mr-3" />
+//                 <span className="text-base font-medium">Appointments</span>
+//               </NavLink>
+//               <NavLink
+//                 to="/admin/users"
+//                 className={({ isActive }) =>
+//                   `flex items-center px-4 py-3 rounded-lg transition-colors ${
+//                     isActive
+//                       ? "bg-blue-600 text-white shadow-md"
+//                       : "text-gray-300 hover:bg-gray-700 hover:text-white"
+//                   }`
+//                 }
+//                 onClick={isMobile ? handleToggleSidebar : undefined} // Fixed
+//               >
+//                 <FaUsers className="w-5 h-5 mr-3" />
+//                 <span className="text-base font-medium">Users</span>
+//               </NavLink>
+//             </>
+//           ) : (
+//             <>
+//               <NavLink
+//                 to="/dashboard"
+//                 className={({ isActive }) =>
+//                   `flex items-center px-4 py-3 rounded-lg transition-colors ${
+//                     isActive
+//                       ? "bg-blue-600 text-white shadow-md"
+//                       : "text-gray-300 hover:bg-gray-700 hover:text-white"
+//                   }`
+//                 }
+//                 onClick={isMobile ? handleToggleSidebar : undefined} // Fixed
+//               >
+//                 <FaCalendarAlt className="w-5 h-5 mr-3" />
+//                 <span className="text-base font-medium">Appointments</span>
+//               </NavLink>
+//               <NavLink
+//                 to="/admin/users"
+//                 className={({ isActive }) =>
+//                   `flex items-center px-4 py-3 rounded-lg transition-colors ${
+//                     isActive
+//                       ? "bg-blue-600 text-white shadow-md"
+//                       : "text-gray-300 hover:bg-gray-700 hover:text-white"
+//                   }`
+//                 }
+//                 onClick={isMobile ? handleToggleSidebar : undefined} // Fixed
+//               >
+//                 <FaUsers className="w-5 h-5 mr-3" />
+//                 <span className="text-base font-medium">Users</span>
+//               </NavLink>
+//             </>
+//           )}
+//         </nav>
+
+//         <div className="p-4 border-t border-gray-700">
+//           <button
+//             onClick={handleLogout}
+//             className="flex items-center w-full px-4 py-3 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+//           >
+//             <FaSignOutAlt className="w-5 h-5 mr-3" />
+//             <span className="text-base font-medium">Logout</span>
+//           </button>
+//         </div>
+//       </div>
+
+//       {/* Overlay for Mobile */}
+//       {isMobile && sideBarOpen && (
+//         <div
+//           className="fixed inset-0 bg-white bg-opacity-50 z-30 lg:hidden transition-opacity"
+//           onClick={handleToggleSidebar} // Fixed
+//         />
+//       )}
+//     </>
+//   );
+// };
+
+// export default AdminSidebar;
 import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
@@ -9,7 +188,11 @@ import {
   FaTimes,
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutAdmin, toggleSidebar } from "../redux/features/adminSlice";
+import {
+  logoutAdmin,
+  toggleSidebar,
+  setSidebarOpen,
+} from "../redux/features/adminSlice";
 
 const AdminSidebar = ({ setToken }) => {
   const dispatch = useDispatch();
@@ -23,32 +206,41 @@ const AdminSidebar = ({ setToken }) => {
     navigate("/");
   };
 
-  const toggleSidebar = () => {
+  const handleToggleSidebar = () => {
     dispatch(toggleSidebar());
   };
 
   useEffect(() => {
+    // Handler to track window width and set mobile/desktop state + sidebar open state correctly
     const handleResize = () => {
       const mobile = window.innerWidth < 1024;
       setIsMobile(mobile);
-      if (mobile && sideBarOpen) {
-        dispatch({ type: "TOGGLE_SIDEBAR" });
+
+      if (mobile) {
+        // On mobile: close sidebar by default
+        dispatch(setSidebarOpen(false));
+      } else {
+        // On desktop: always open sidebar
+        dispatch(setSidebarOpen(true));
       }
     };
 
     window.addEventListener("resize", handleResize);
+
+    // Call on mount
+    handleResize();
+
     return () => window.removeEventListener("resize", handleResize);
-  }, [dispatch, sideBarOpen]);
+  }, [dispatch]);
 
   return (
     <>
-      {/* Mobile Toggle Button */}
-      {isMobile && (
+      {/* Mobile Toggle Button: only show if mobile & sidebar closed */}
+      {isMobile && !sideBarOpen && (
         <button
-          onClick={toggleSidebar}
-          className={`fixed top-4 left-4 z-50 p-2 rounded-md bg-gray-800 text-white transition-all ${
-            sideBarOpen ? "opacity-0 pointer-events-none" : "opacity-100"
-          }`}
+          onClick={handleToggleSidebar}
+          className="fixed top-4 left-4 z-50 p-2 rounded-md bg-gray-800 text-white transition-opacity opacity-100"
+          aria-label="Toggle menu"
         >
           <FaBars className="w-5 h-5" />
         </button>
@@ -56,20 +248,22 @@ const AdminSidebar = ({ setToken }) => {
 
       {/* Sidebar */}
       <div
-        className={`bg-gray-800 text-white fixed lg:static top-0 z-40 h-screen flex flex-col transition-all duration-300 ease-in-out ${
-          isMobile
-            ? sideBarOpen
-              ? "left-0 w-64"
-              : "-left-64 w-0"
-            : "left-0 w-64"
-        }`}
-        style={{ position: "fixed" }}
+        className={`bg-gray-800 text-white fixed top-0 z-40 h-screen flex flex-col transition-all duration-300 ease-in-out
+          ${
+            isMobile
+              ? sideBarOpen
+                ? "left-0 w-full max-w-xs shadow-xl"
+                : "-left-full w-0"
+              : "left-0 w-64"
+          }
+        `}
       >
-        {/* Close Button (Mobile) */}
+        {/* Close Button on Mobile */}
         {isMobile && sideBarOpen && (
           <button
-            onClick={toggleSidebar}
+            onClick={handleToggleSidebar}
             className="absolute top-4 right-4 p-2 text-gray-300 hover:text-white transition-colors"
+            aria-label="Close menu"
           >
             <FaTimes className="w-5 h-5" />
           </button>
@@ -83,7 +277,7 @@ const AdminSidebar = ({ setToken }) => {
           </span>
         </div>
 
-        {/* Navigation Links */}
+        {/* Navigation */}
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
           {isAdmin ? (
             <>
@@ -96,7 +290,7 @@ const AdminSidebar = ({ setToken }) => {
                       : "text-gray-300 hover:bg-gray-700 hover:text-white"
                   }`
                 }
-                onClick={isMobile ? toggleSidebar : undefined}
+                onClick={isMobile ? handleToggleSidebar : undefined}
               >
                 <FaCalendarAlt className="w-5 h-5 mr-3" />
                 <span className="text-base font-medium">Appointments</span>
@@ -110,7 +304,7 @@ const AdminSidebar = ({ setToken }) => {
                       : "text-gray-300 hover:bg-gray-700 hover:text-white"
                   }`
                 }
-                onClick={isMobile ? toggleSidebar : undefined}
+                onClick={isMobile ? handleToggleSidebar : undefined}
               >
                 <FaUsers className="w-5 h-5 mr-3" />
                 <span className="text-base font-medium">Users</span>
@@ -127,7 +321,7 @@ const AdminSidebar = ({ setToken }) => {
                       : "text-gray-300 hover:bg-gray-700 hover:text-white"
                   }`
                 }
-                onClick={isMobile ? toggleSidebar : undefined}
+                onClick={isMobile ? handleToggleSidebar : undefined}
               >
                 <FaCalendarAlt className="w-5 h-5 mr-3" />
                 <span className="text-base font-medium">Appointments</span>
@@ -141,7 +335,7 @@ const AdminSidebar = ({ setToken }) => {
                       : "text-gray-300 hover:bg-gray-700 hover:text-white"
                   }`
                 }
-                onClick={isMobile ? toggleSidebar : undefined}
+                onClick={isMobile ? handleToggleSidebar : undefined}
               >
                 <FaUsers className="w-5 h-5 mr-3" />
                 <span className="text-base font-medium">Users</span>
@@ -162,11 +356,11 @@ const AdminSidebar = ({ setToken }) => {
         </div>
       </div>
 
-      {/* Overlay for Mobile */}
+      {/* Overlay for Mobile when sidebar open */}
       {isMobile && sideBarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden transition-opacity"
-          onClick={toggleSidebar}
+          className="fixed inset-0 bg-white bg-opacity-50 z-30 lg:hidden transition-opacity"
+          onClick={handleToggleSidebar}
         />
       )}
     </>

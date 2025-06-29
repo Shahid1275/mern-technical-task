@@ -4,7 +4,9 @@ import { FaBell, FaUserCircle } from "react-icons/fa";
 const Navbar = () => {
   return (
     <nav className="bg-white shadow-sm fixed left-0 lg:left-64 right-0 top-0 z-30 h-16 flex items-center justify-between px-6 transition-all duration-300">
-      <div className="text-lg font-semibold text-gray-800">Dashboard</div>
+      <div className="text-lg font-semibold text-gray-800 ml-5 pl-5 ">
+        Dashboard Overview
+      </div>
       <div className="flex items-center space-x-4">
         <button className="p-2 text-gray-500 hover:text-gray-700 relative">
           <FaBell className="w-5 h-5" />
