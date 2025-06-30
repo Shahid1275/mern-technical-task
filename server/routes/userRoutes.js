@@ -4,7 +4,7 @@ import {
   logoutUser,
   registerUser,
 } from "../controllers/userController.js";
-
+//all routes
 const userRouter = express.Router();
 
 // POST register
