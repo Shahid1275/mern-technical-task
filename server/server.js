@@ -5,7 +5,7 @@ import connectDB from "./configs/db.js";
 import router from "./routes/appointmentRoutes.js";
 import adminRouter from "./routes/adminRoute.js";
 import userRouter from "./routes/userRoutes.js";
-
+// all functionality
 connectDB();
 //initialize the app
 const app = express();
