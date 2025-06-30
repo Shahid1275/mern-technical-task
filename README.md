@@ -3,8 +3,7 @@
 A MERN stack application that allows:
 - **Users**: Create, update, read, and delete appointments.
 - **Admin**: View all users and appointments.
--
--
+  
 - ## Requirements
 
 - Node.js (v20.x or later)
@@ -25,11 +24,6 @@ PORT=3000
 
 NOTE: change the scripts in package.json depending upon your os to set NODE environment.
 
-### Frontend (.env)
-
-```env
-BASE_URL= "http://localhost:5173"
-```
 
 ## Starting the Application
 
@@ -76,7 +70,6 @@ BASE_URL= "http://localhost:5173"
    ```
 
    The frontend application will be running on `http://localhost:5173` by default.
-```
 
 
 ### Admin
@@ -100,43 +93,29 @@ BASE_URL= "http://localhost:5173"
    ```
 
    The admin application will be running on `http://localhost:5174` by default.
-```
 
 
 ## Database Setup
 
-Ensure you have PostgreSQL or your preferred SQL database set up. Create a database for the URL shortener application.
+Ensure you have mongodb or your preferred database set up. Create a database for the appointment application.
 
 1. **Create Database:**
 
    Connect to your database and create a new database:
 
-   ```sql
-   CREATE DATABASE url_shortner;
-   ```
-
 2. **Update `.env` File:**
 
-   Update the `DATABASE_URL` variable in the `.env` file with your database credentials.
-
-```
-psql -U postgres -d url_shortner -f seed.sql
-```
+   Update the `MONGODB_URI` variable in the `.env` file with your database credentials.
 
 The passwords are stored in hashed form for security. Ensure your application uses appropriate hashing methods to match this data.
 
-```
 ## Features
 
-- **URL Shortening**: Convert long URLs into short, user-friendly links.
-- **Custom Short URLs**: Option to create personalized short URLs.
-- **Redirect Functionality**: Automatically redirect short URLs to their original destinations.
 - **User Authentication**: Secure login and signup using JSON Web Tokens (JWT).
-- **Dashboard Management**: Manage, edit, and delete shortened URLs in a responsive React-based interface.
-- **Expiration Dates**: Set expiration dates for short URLs for better control.
-- **Clipboard Copying**: Quickly copy the shortened URL with one click.
-- **Statistics**: Basic statistics for tracking the number of times a short URL was accessed.
+- **User Dashboard Management**: Manage, edit, and delete appointments in a responsive React-based interface.
 - **Fully Responsive UI**: Clean and modern design optimized for all devices.
+- **Crud Operations**:Create, update, read, and delete appointments.
+- **Admin Panel Dashboard**:Admin dashboard to view all users and appointments.
 
 ---
 
