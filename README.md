@@ -44,7 +44,7 @@ NOTE: change the scripts in package.json depending upon your os to set NODE envi
 3. Start the backend server:
 
    ```bash
-   npm run start:dev
+   npm start
    ```
 
    The backend server will be running on `http://localhost:3000` by default.
