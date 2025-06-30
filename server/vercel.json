@@ -2,17 +2,31 @@
   "version": 2,
   "builds": [
     {
-      "src": "server.js",
+      "src": "server/server.js",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["dist/**"]
+        "includeFiles": [
+          "server/configs/**",
+          "server/controllers/**",
+          "server/middlewares/**",
+          "server/models/**",
+          "server/routes/**",
+          "server/package.json",
+          "server/package-lock.json",
+          "server/.env"
+        ]
       }
     }
   ],
   "routes": [
     {
+      "src": "/api/(.*)",
+      "dest": "server/server.js"
+    },
+    {
       "src": "/(.*)",
-      "dest": "server.js"
+      "dest": "server/server.js",
+      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"]
     }
   ]
 }
