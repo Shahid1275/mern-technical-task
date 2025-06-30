@@ -2,8 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const API_BASE_URL = "https://mern-technical-task-1.onrender.com";
-
+const API_URL = import.meta.env.REACT_APP_API_URL || "http://localhost:3000";
 export const createAppointment = createAsyncThunk(
   "appointments/create",
   async (appointmentData, { getState, rejectWithValue }) => {
@@ -44,7 +43,7 @@ export const createAppointment = createAsyncThunk(
       }
 
       const response = await axios.post(
-        `${API_BASE_URL}/api/appointments/create`,
+        `${API_URL}/api/appointments/create`,
         { title, date, startTime, endTime, status: status || "pending" },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -64,7 +63,7 @@ export const getAppointments = createAsyncThunk(
   async (_, { getState, rejectWithValue }) => {
     try {
       const { token } = getState().auth;
-      const response = await axios.get(`${API_BASE_URL}/api/appointments`, {
+      const response = await axios.get(`${API_URL}/api/appointments`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
@@ -115,7 +114,7 @@ export const updateAppointment = createAsyncThunk(
       }
 
       const response = await axios.put(
-        `${API_BASE_URL}/api/appointments/${id}`,
+        `${API_URL}/api/appointments/${id}`,
         { title, date, startTime, endTime, status: status || "pending" },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -135,7 +134,7 @@ export const deleteAppointment = createAsyncThunk(
   async (id, { getState, rejectWithValue }) => {
     try {
       const { token } = getState().auth;
-      await axios.delete(`${API_BASE_URL}/api/appointments/${id}`, {
+      await axios.delete(`${API_URL}/api/appointments/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       toast.success("Appointment deleted successfully!");
