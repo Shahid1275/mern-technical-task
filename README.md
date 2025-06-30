@@ -25,7 +25,7 @@ PORT=3000
 NOTE: change the scripts in package.json depending upon your os to set NODE environment.
 
 
-## Starting the Application
+### Starting the Application
 
 ### Backend
 
