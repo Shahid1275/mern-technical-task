@@ -7,7 +7,7 @@ export const registerUser = createAsyncThunk(
     try {
       const response = await axios.post(
         `${
-          https://mern-technical-task-1.onrender.com
+          import.meta.env.REACT_APP_API_URL || "http://localhost:3000"
         }/api/auth/register`,
         userData
       );
@@ -25,7 +25,7 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await axios.post(
         `${
-            https://mern-technical-task-1.onrender.com
+          import.meta.env.REACT_APP_API_URL || "http://localhost:3000"
         }/api/auth/login`,
         credentials
       );
@@ -43,7 +43,7 @@ export const logoutUser = createAsyncThunk(
     try {
       const response = await axios.post(
         `${
-      https://mern-technical-task-1.onrender.com
+          import.meta.env.REACT_APP_API_URL || "http://localhost:3000"
         }/api/auth/logout`
       );
       return response.data;
