@@ -64,7 +64,7 @@ export const getAppointments = createAsyncThunk(
   async (_, { getState, rejectWithValue }) => {
     try {
       const { token } = getState().auth;
-      const response = await axios.get(`${API_URL}/api/appointments`, {
+      const response = await axios.get(`${https://mern-technical-task-1.onrender.com}/api/appointments`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
