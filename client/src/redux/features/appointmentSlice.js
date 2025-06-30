@@ -2,6 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+const API_BASE_URL = "https://mern-technical-task-1.onrender.com";
+
 export const createAppointment = createAsyncThunk(
   "appointments/create",
   async (appointmentData, { getState, rejectWithValue }) => {
@@ -38,13 +40,11 @@ export const createAppointment = createAsyncThunk(
 
       const validStatuses = ["pending", "confirmed", "cancelled"];
       if (status && !validStatuses.includes(status)) {
-        throw new Error(
-          "Invalid status. Must be pending, confirmed, or cancelled"
-        );
+        throw new Error("Invalid status. Must be pending, confirmed, or cancelled");
       }
 
       const response = await axios.post(
-        `${https://mern-technical-task-1.onrender.com}/api/appointments/create`,
+        `${API_BASE_URL}/api/appointments/create`,
         { title, date, startTime, endTime, status: status || "pending" },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -64,7 +64,7 @@ export const getAppointments = createAsyncThunk(
   async (_, { getState, rejectWithValue }) => {
     try {
       const { token } = getState().auth;
-      const response = await axios.get(`${https://mern-technical-task-1.onrender.com}/api/appointments`, {
+      const response = await axios.get(`${API_BASE_URL}/api/appointments`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
@@ -111,13 +111,11 @@ export const updateAppointment = createAsyncThunk(
 
       const validStatuses = ["pending", "confirmed", "cancelled"];
       if (status && !validStatuses.includes(status)) {
-        throw new Error(
-          "Invalid status. Must be pending, confirmed, or cancelled"
-        );
+        throw new Error("Invalid status. Must be pending, confirmed, or cancelled");
       }
 
       const response = await axios.put(
-        `${https://mern-technical-task-1.onrender.com}/api/appointments/${id}`,
+        `${API_BASE_URL}/api/appointments/${id}`,
         { title, date, startTime, endTime, status: status || "pending" },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -137,7 +135,7 @@ export const deleteAppointment = createAsyncThunk(
   async (id, { getState, rejectWithValue }) => {
     try {
       const { token } = getState().auth;
-      await axios.delete(`${https://mern-technical-task-1.onrender.com}/api/appointments/${id}`, {
+      await axios.delete(`${API_BASE_URL}/api/appointments/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       toast.success("Appointment deleted successfully!");
