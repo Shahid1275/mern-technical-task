@@ -13,15 +13,16 @@ const appointmentSchema = new mongoose.Schema(
       trim: true,
       maxlength: 100,
     },
-    description: {
-      type: String,
-      trim: true,
-      maxlength: 500,
-    },
     date: {
       type: Date,
       required: true,
-      min: Date.now,
+      validate: {
+        validator: function (value) {
+          // Validate that date is not in the past
+          return value >= new Date(new Date().setHours(0, 0, 0, 0));
+        },
+        message: "Cannot create appointment for past dates",
+      },
     },
     startTime: {
       type: String,
@@ -36,6 +37,7 @@ const appointmentSchema = new mongoose.Schema(
         validator: function (value) {
           return value > this.startTime;
         },
+        message: "End time must be after start time",
       },
     },
     status: {
@@ -48,8 +50,12 @@ const appointmentSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-// i am using for hash and indexing and get more fast results
+
 appointmentSchema.index({ user: 1, date: 1 });
 
-export default mongoose.models.Appointment ||
+// Check if the model already exists before creating it
+const Appointment =
+  mongoose.models.Appointment ||
   mongoose.model("Appointment", appointmentSchema);
+
+export default Appointment;

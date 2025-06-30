@@ -44,11 +44,6 @@ export const registerUser = async (req, res) => {
       password: await bcrypt.hash(password, 10),
     });
 
-    // Generate token
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: AUTH_CONFIG.tokenExpiration,
-    });
-
     return res.status(201).json({
       success: true,
       message: "Registration successful",
@@ -58,7 +53,6 @@ export const registerUser = async (req, res) => {
           name: user.name,
           email: user.email,
         },
-        token,
       },
     });
   } catch (error) {

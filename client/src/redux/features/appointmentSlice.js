@@ -1,144 +1,223 @@
-
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import appointmentService from "../services/appointmentService";
+import axios from "axios";
+import { toast } from "react-toastify";
 
-// Async thunks for API calls
+const API_URL = import.meta.env.REACT_APP_API_URL || "http://localhost:3000";
+
 export const createAppointment = createAsyncThunk(
   "appointments/create",
-  async (appointmentData, thunkAPI) => {
+  async (appointmentData, { getState, rejectWithValue }) => {
     try {
-      const token = thunkAPI.getState().user.user?.token;
-      return await appointmentService.createAppointment(appointmentData, token);
+      const { token } = getState().auth;
+      const { title, date, startTime, endTime, status } = appointmentData;
+
+      // Client-side validation
+      if (!title || !date || !startTime || !endTime) {
+        throw new Error("All fields are required");
+      }
+
+      const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
+      if (!timeRegex.test(startTime) || !timeRegex.test(endTime)) {
+        throw new Error("Invalid time format. Use HH:MM");
+      }
+
+      const [startHour, startMin] = startTime.split(":").map(Number);
+      const [endHour, endMin] = endTime.split(":").map(Number);
+      const startMinutes = startHour * 60 + startMin;
+      const endMinutes = endHour * 60 + endMin;
+      if (endMinutes <= startMinutes) {
+        throw new Error("End time must be after start time");
+      }
+
+      const appointmentDate = new Date(date);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      appointmentDate.setHours(0, 0, 0, 0);
+
+      if (appointmentDate < today) {
+        throw new Error("Cannot create appointment for past dates");
+      }
+
+      const validStatuses = ["pending", "confirmed", "cancelled"];
+      if (status && !validStatuses.includes(status)) {
+        throw new Error(
+          "Invalid status. Must be pending, confirmed, or cancelled"
+        );
+      }
+
+      const response = await axios.post(
+        `${API_URL}/api/appointments/create`,
+        { title, date, startTime, endTime, status: status || "pending" },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      toast.success("Appointment created successfully!");
+      return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      const errorMessage = error.response?.data?.error || error.message;
+      toast.error(`Error: ${errorMessage}`);
+      return rejectWithValue(errorMessage);
     }
   }
 );
 
 export const getAppointments = createAsyncThunk(
   "appointments/getAll",
-  async (_, thunkAPI) => {
+  async (_, { getState, rejectWithValue }) => {
     try {
-      const token = thunkAPI.getState().user.user?.token;
-      return await appointmentService.getAppointments(token);
+      const { token } = getState().auth;
+      const response = await axios.get(`${API_URL}/api/appointments`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      const errorMessage = error.response?.data?.error || error.message;
+      toast.error(`Error: ${errorMessage}`);
+      return rejectWithValue(errorMessage);
     }
   }
 );
 
 export const updateAppointment = createAsyncThunk(
   "appointments/update",
-  async ({ id, appointmentData }, thunkAPI) => {
+  async ({ id, data }, { getState, rejectWithValue }) => {
     try {
-      const token = thunkAPI.getState().user.user?.token;
-      return await appointmentService.updateAppointment(
-        id,
-        appointmentData,
-        token
+      const { token } = getState().auth;
+      const { title, date, startTime, endTime, status } = data;
+
+      if (!title || !date || !startTime || !endTime) {
+        throw new Error("All fields are required");
+      }
+
+      const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
+      if (!timeRegex.test(startTime) || !timeRegex.test(endTime)) {
+        throw new Error("Invalid time format. Use HH:MM");
+      }
+
+      const [startHour, startMin] = startTime.split(":").map(Number);
+      const [endHour, endMin] = endTime.split(":").map(Number);
+      const startMinutes = startHour * 60 + startMin;
+      const endMinutes = endHour * 60 + endMin;
+      if (endMinutes <= startMinutes) {
+        throw new Error("End time must be after start time");
+      }
+
+      const appointmentDate = new Date(date);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      appointmentDate.setHours(0, 0, 0, 0);
+
+      if (appointmentDate < today) {
+        throw new Error("Cannot update appointment to past dates");
+      }
+
+      const validStatuses = ["pending", "confirmed", "cancelled"];
+      if (status && !validStatuses.includes(status)) {
+        throw new Error(
+          "Invalid status. Must be pending, confirmed, or cancelled"
+        );
+      }
+
+      const response = await axios.put(
+        `${API_URL}/api/appointments/${id}`,
+        { title, date, startTime, endTime, status: status || "pending" },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
+
+      toast.success("Appointment updated successfully!");
+      return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      const errorMessage = error.response?.data?.error || error.message;
+      toast.error(`Error: ${errorMessage}`);
+      return rejectWithValue(errorMessage);
     }
   }
 );
 
 export const deleteAppointment = createAsyncThunk(
   "appointments/delete",
-  async (id, thunkAPI) => {
+  async (id, { getState, rejectWithValue }) => {
     try {
-      const token = thunkAPI.getState().user.user?.token;
-      await appointmentService.deleteAppointment(id, token);
+      const { token } = getState().auth;
+      await axios.delete(`${API_URL}/api/appointments/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      toast.success("Appointment deleted successfully!");
       return id;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      const errorMessage = error.response?.data?.error || error.message;
+      toast.error(`Error: ${errorMessage}`);
+      return rejectWithValue(errorMessage);
     }
   }
 );
 
 const initialState = {
   appointments: [],
-  isLoading: false,
-  isSuccess: false,
-  isError: false,
-  message: "",
+  loading: false,
+  error: null,
 };
 
 const appointmentSlice = createSlice({
   name: "appointments",
   initialState,
-  reducers: {
-    reset: (state) => {
-      state.isLoading = false;
-      state.isSuccess = false;
-      state.isError = false;
-      state.message = "";
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      // Create Appointment
       .addCase(createAppointment.pending, (state) => {
-        state.isLoading = true;
+        state.loading = true;
+        state.error = null;
       })
       .addCase(createAppointment.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
+        state.loading = false;
         state.appointments.push(action.payload);
       })
       .addCase(createAppointment.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload?.error || "Failed to create appointment";
+        state.loading = false;
+        state.error = action.payload;
       })
-      // Get Appointments
       .addCase(getAppointments.pending, (state) => {
-        state.isLoading = true;
+        state.loading = true;
+        state.error = null;
       })
       .addCase(getAppointments.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
+        state.loading = false;
         state.appointments = action.payload;
       })
       .addCase(getAppointments.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload?.error || "Failed to fetch appointments";
+        state.loading = false;
+        state.error = action.payload;
       })
-      // Update Appointment
       .addCase(updateAppointment.pending, (state) => {
-        state.isLoading = true;
+        state.loading = true;
+        state.error = null;
       })
       .addCase(updateAppointment.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.appointments = state.appointments.map((appt) =>
-          appt._id === action.payload._id ? action.payload : appt
+        state.loading = false;
+        const index = state.appointments.findIndex(
+          (app) => app._id === action.payload._id
         );
+        if (index !== -1) state.appointments[index] = action.payload;
       })
       .addCase(updateAppointment.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload?.error || "Failed to update appointment";
+        state.loading = false;
+        state.error = action.payload;
       })
-      // Delete Appointment
       .addCase(deleteAppointment.pending, (state) => {
-        state.isLoading = true;
+        state.loading = true;
+        state.error = null;
       })
       .addCase(deleteAppointment.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
+        state.loading = false;
         state.appointments = state.appointments.filter(
-          (appt) => appt._id !== action.payload
+          (app) => app._id !== action.payload
         );
       })
       .addCase(deleteAppointment.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload?.error || "Failed to delete appointment";
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
-export const { reset } = appointmentSlice.actions;
 export default appointmentSlice.reducer;

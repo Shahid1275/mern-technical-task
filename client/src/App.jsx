@@ -1,4 +1,3 @@
-import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,31 +5,27 @@ import {
   Navigate,
 } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { ToastContainer } from "react-toastify";
 import AuthForm from "./pages/AuthForm";
+import React from "react";
 import DashboardLayout from "./layouts/DashboardLayout";
-
 const App = () => {
-  // Correct selector based on your slice name
-  const { user } = useSelector((state) => state.user); // or state.auth if you renamed the slice
+  const { token } = useSelector((state) => state.auth);
 
   return (
     <div className="min-h-screen bg-gray-100">
+      <ToastContainer position="top-right" autoClose={5000} />
       <Router>
         <Routes>
-          {/* Home route with auth form */}
+          <Route
+            path="/auth"
+            element={!token ? <AuthForm /> : <Navigate to="/" />}
+          />
           <Route
             path="/"
-            element={!user ? <AuthForm /> : <Navigate to="/dashboard" />}
+            element={token ? <DashboardLayout /> : <Navigate to="/auth" />}
           />
-
-          {/* Protected dashboard */}
-          <Route
-            path="/dashboard/*"
-            element={user ? <DashboardLayout /> : <Navigate to="/" />}
-          />
-
-          {/* Catch-all */}
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<Navigate to="/auth" />} />
         </Routes>
       </Router>
     </div>
