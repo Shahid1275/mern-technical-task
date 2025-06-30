@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { toast } from "react-toastify";
 
 export const registerUser = createAsyncThunk(
   "auth/register",
@@ -15,10 +14,6 @@ export const registerUser = createAsyncThunk(
       return response.data;
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
-      toast.error(`Error: ${errorMessage}`, {
-        position: "top-left",
-        autoClose: 5000,
-      });
       return rejectWithValue(errorMessage);
     }
   }
@@ -37,10 +32,6 @@ export const loginUser = createAsyncThunk(
       return response.data;
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
-      toast.error(`Error: ${errorMessage}`, {
-        position: "top-left",
-        autoClose: 5000,
-      });
       return rejectWithValue(errorMessage);
     }
   }
@@ -58,10 +49,6 @@ export const logoutUser = createAsyncThunk(
       return response.data;
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
-      toast.error(`Error: ${errorMessage}`, {
-        position: "top-left",
-        autoClose: 5000,
-      });
       return rejectWithValue(errorMessage);
     }
   }

@@ -8,7 +8,6 @@ export const protect = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("Decoded Payload:", decoded);
 
     // Set req.user based on token role
     if (decoded.role === "admin") {
@@ -24,8 +23,6 @@ export const protect = async (req, res, next) => {
       }
       req.user = user;
     }
-
-    console.log("req.user after setting:", req.user);
     next();
   } catch (error) {
     console.error("Verification Error:", error.message);

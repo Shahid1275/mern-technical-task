@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-// anyone understand this schema with readable comments
 const userSchema = new mongoose.Schema(
   {
     name: {

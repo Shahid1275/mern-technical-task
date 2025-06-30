@@ -33,7 +33,7 @@ const DashboardLayout = () => {
   useEffect(() => {
     if (error) {
       setGlobalError(error);
-      const timer = setTimeout(() => setGlobalError(""), 2000);
+      const timer = setTimeout(() => setGlobalError(""), 5000);
       return () => clearTimeout(timer);
     }
   }, [error]);
@@ -41,7 +41,7 @@ const DashboardLayout = () => {
   // Handle form errors
   useEffect(() => {
     if (formError) {
-      const timer = setTimeout(() => setFormError(""), 2000);
+      const timer = setTimeout(() => setFormError(""), 5000);
       return () => clearTimeout(timer);
     }
   }, [formError]);
@@ -145,7 +145,7 @@ const DashboardLayout = () => {
     <div className="min-h-screen bg-gray-100">
       {/* Error Toast */}
       {globalError && (
-        <div className="fixed top-4 right-4 z-50">
+        <div className="fixed top-4 right-4 z-50 w-full max-w-xs sm:max-w-md">
           <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-lg">
             <p>{globalError}</p>
           </div>
@@ -153,18 +153,18 @@ const DashboardLayout = () => {
       )}
 
       <nav className="bg-gray-800 text-white p-4 flex justify-between items-center">
-        <h2 className="text-xl font-bold">Appointment Dashboard</h2>
+        <h2 className="text-lg sm:text-xl font-bold">Appointment Dashboard</h2>
         <button
           onClick={handleLogout}
-          className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded text-sm sm:text-base"
+          className="bg-red-600 hover:bg-red-700 text-white py-1 px-3 sm:py-2 sm:px-4 rounded text-sm"
         >
           Logout
         </button>
       </nav>
 
       <div className="p-4 sm:p-6">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-          <h1 className="text-xl sm:text-2xl font-bold">My Appointments</h1>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-3 sm:gap-4">
+          <h1 className="text-lg sm:text-2xl font-bold">My Appointments</h1>
           <button
             onClick={() => {
               setEditingId(null);
@@ -215,12 +215,12 @@ const DashboardLayout = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {appointments.map((appointment) => (
-                  <tr key={appointment._id}>
+                  <tr key={appointment._id} className="hover:bg-gray-50">
                     <td className="px-3 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
                         {appointment.title}
                       </div>
-                      <div className="text-xs text-gray-500 sm:hidden">
+                      <div className="text-xs text-gray-500 sm:hidden mt-1">
                         {new Date(appointment.date).toLocaleDateString()} •{" "}
                         {appointment.startTime} - {appointment.endTime}
                       </div>
@@ -277,7 +277,7 @@ const DashboardLayout = () => {
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               <h3 className="text-lg font-bold mb-4">
                 {editingId ? "Edit Appointment" : "Create Appointment"}
               </h3>
@@ -327,7 +327,7 @@ const DashboardLayout = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label
                       className="block text-gray-700 text-sm font-bold mb-1"
@@ -392,13 +392,13 @@ const DashboardLayout = () => {
                     setIsModalOpen(false);
                     setFormError("");
                   }}
-                  className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-gray-800"
+                  className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-gray-800 text-sm sm:text-base"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleCreateOrUpdate}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white"
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white text-sm sm:text-base"
                 >
                   {editingId ? "Update" : "Create"}
                 </button>

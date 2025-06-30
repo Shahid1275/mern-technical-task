@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-import bcrypt from "bcryptjs"; // Add this for password hashing
+import bcrypt from "bcryptjs";
 import userModel from "../models/userModel.js";
 import appointmentModel from "../models/appointmentModel.js";
 
@@ -70,7 +70,6 @@ export const adminLogin = async (req, res) => {
   }
 };
 
-// Other exports (getAllAppointments, getAllUsers) remain unchanged
 export const getAllAppointments = async (req, res) => {
   try {
     const appointments = await appointmentModel

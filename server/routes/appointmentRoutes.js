@@ -8,7 +8,7 @@ import {
 } from "../controllers/appointmentController.js";
 import { protect } from "../middlewares/auth.js";
 
-const router = express.Router(); // Changed from appointmentRouter to router for consistency
+const router = express.Router();
 
 // Apply protection to all routes
 router.use(protect);

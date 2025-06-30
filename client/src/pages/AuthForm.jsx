@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
-import { setToken } from "../redux/features/authSlice"; // Adjust path
+import { setToken } from "../redux/features/authSlice";
 import { loginUser, registerUser } from "../redux/features/authSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -49,7 +49,8 @@ const AuthForm = () => {
         });
       }
     } catch (error) {
-      toast.error(`Error: ${error.message}`, {
+      toast.dismiss(); // Dismiss any existing toasts
+      toast.error(`Error: ${error.message || "Invalid credentials"}`, {
         position: "top-right",
         autoClose: 5000,
       });
