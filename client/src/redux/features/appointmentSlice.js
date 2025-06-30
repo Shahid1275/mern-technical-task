@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const API_URL = import.meta.env.REACT_APP_API_URL || "http://localhost:3000";
+const API_URL = https://mern-technical-task-1.onrender.com
 
 export const createAppointment = createAsyncThunk(
   "appointments/create",
