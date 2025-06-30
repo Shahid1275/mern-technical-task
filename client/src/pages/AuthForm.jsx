@@ -5,7 +5,7 @@ import { setToken } from "../redux/features/authSlice";
 import { loginUser, registerUser } from "../redux/features/authSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
+//these is the whole code of form
 const AuthForm = () => {
   const [state, setState] = useState("Sign Up");
   const [isSubmitting, setIsSubmitting] = useState(false);
